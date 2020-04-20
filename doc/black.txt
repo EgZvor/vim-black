@@ -1,0 +1,42 @@
+*black.txt*     For Vim version 7.3     Last change: 2020 April 20
+
+Author:        Łukasz Langa
+Upstream repo: https://github.com/psf/black
+Repo:          https://github.com/egzvor/vim-black
+License:       Same terms as Vim itself (see |license|)
+Requires:      Vim Ver7.0+
+Version:       1.1
+
+Black is the uncompromising Python code formatter.
+
+COMMANDS                                    *black* *:Black*
+
+:Black                  Format the entire file (ranges not supported)
+
+OPTIONS                                     *black-options*
+
+------------------------------------------------------------------------------
+g:black_fast                                *g:black_fast*
+
+Skip temporary sanity checks.
+
+Default: 0
+Corresponding option: --fast
+
+------------------------------------------------------------------------------
+g:black_linelength                         *g:black_linelength*
+
+How many characters per line to allow.
+
+Default: 88
+Corresponding option: -l, --line-length INTEGER
+
+------------------------------------------------------------------------------
+g:black_skip_string_normalization          *g:black_skip_string_normalization*
+
+Don't normalize string quotes or prefixes.
+
+Default: 0
+Corresponding option: -S, --skip-string-normalization
+
+ vim:tw=78:et:ft=help:norl:
