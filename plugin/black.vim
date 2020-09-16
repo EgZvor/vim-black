@@ -34,8 +34,12 @@ endif
 if !exists("g:black_linelength")
   let g:black_linelength = 88
 endif
-if !exists("g:black_skip_string_normalization")
-  let g:black_skip_string_normalization = 0
+if !exists("g:black_string_normalization")
+  if exists("g:black_skip_string_normalization")
+    let g:black_string_normalization = !g:black_skip_string_normalization
+  else
+    let g:black_string_normalization = 1
+  endif
 endif
 
 python3 << EndPython3
@@ -45,7 +49,7 @@ import os
 import sys
 import time
 import vim
-
+from distutils.util import strtobool
 
 
 class Flag(collections.namedtuple("FlagBase", "name, cast")):
@@ -58,15 +62,13 @@ class Flag(collections.namedtuple("FlagBase", "name, cast")):
     name = self.var_name
     if name == "line_length":
       name = name.replace("_", "")
-    if name == "string_normalization":
-      name = "skip_" + name
     return "g:black_" + name
 
 
 FLAGS = [
   Flag(name="line_length", cast=int),
-  Flag(name="fast", cast=bool),
-  Flag(name="string_normalization", cast=bool),
+  Flag(name="fast", cast=strtobool),
+  Flag(name="string_normalization", cast=strtobool),
 ]
 
 
@@ -115,7 +117,7 @@ def get_configs():
     toml_config = {}
 
   return {
-    flag.var_name: toml_config.get(flag.name, flag.cast(vim.eval(flag.vim_rc_name)))
+    flag.var_name: flag.cast(toml_config.get(flag.name, vim.eval(flag.vim_rc_name)))
     for flag in FLAGS
   }
 
