@@ -41,5 +41,5 @@ if !exists("g:black_string_normalization")
   endif
 endif
 
-command! Black :call black#Black()
+command! -range=% Black :call black#Black(<line1>, <line2>)
 command! BlackVersion :call black#BlackVersion()

@@ -20,13 +20,11 @@ python interpreter used by your Vim.
 
 ## Commands and shortcuts:
 
-- `:Black` to format the entire file (ranges not supported)
-- `:BlackUpgrade` to upgrade _Black_ inside the virtualenv
-- `:BlackVersion` to get the current version of _Black_ inside the virtualenv
+- `:[range]Black` to format the selected lines
+- `:BlackVersion` to get the currently used version of _Black_
 
 ## Configuration:
 
 - `g:black_fast` (defaults to `0`)
 - `g:black_linelength` (defaults to `88`)
-- `g:black_skip_string_normalization` (defaults to `0`)
-- `g:black_virtualenv` (defaults to `~/.vim/black` or `~/.local/share/nvim/black`)
+- `g:black_string_normalization` (defaults to `1`)
