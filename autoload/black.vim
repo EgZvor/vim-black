@@ -71,6 +71,7 @@ def Black(from_line, to_line):
                 window.cursor = cursor
             except vim.error:
                 window.cursor = (len(window.buffer), 0)
+        print("Finished formatting, yay!")
 
 
 def get_configs():
