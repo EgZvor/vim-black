@@ -11,7 +11,14 @@ Black is the uncompromising Python code formatter.
 
 COMMANDS                                    *black* *:Black*
 
-:Black                  Format the entire file (ranges not supported)
+:Black
+:[range]Black
+
+Format the lines in [range]. When no range is given all lines are formatted.
+
+Note that the responsibility for selecting a syntactically correct (aside from
+indentation) piece of code lies entirely on you. Formatting an incorrect piece
+of code will result in an error.
 
 OPTIONS                                     *black-options*
 
