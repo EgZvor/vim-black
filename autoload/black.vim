@@ -1,10 +1,11 @@
 python3 << EndPython3
-import black
 import collections
 import os
 import sys
-import vim
 from distutils.util import strtobool
+
+import black
+import vim
 
 
 class Flag(collections.namedtuple("FlagBase", "name, cast")):
@@ -27,6 +28,26 @@ FLAGS = [
 ]
 
 
+def _get_indent(line):
+    indent = ""
+    for char in line:
+        if not char.isspace():
+            break
+        indent += char
+    return indent
+
+
+def _indent_split(lines):
+    indent = _get_indent(lines[0])
+    return indent, [line.replace(indent, "", 1) for line in lines]
+
+
+def _add_indent(line, indent):
+    if not line:
+        return line
+    return indent + line
+
+
 def Black(from_line, to_line):
     configs = get_configs()
     mode = black.Mode(
@@ -34,18 +55,12 @@ def Black(from_line, to_line):
         string_normalization=configs["string_normalization"],
         is_pyi=vim.current.buffer.name.endswith(".pyi"),
     )
-    b = vim.current.buffer
-    from_line -= 1
-    lines_to_format = b[from_line:to_line]
-    head = lines_to_format[0]
-    indent = head[:-len(head.lstrip())]
-    buffer_str = "\n".join(
-        line.replace(indent, "", 1) for line in lines_to_format
-    )
+    lines_to_format = vim.current.buffer[from_line:to_line]
+    indent, lines_to_format = _indent_split(lines_to_format)
     mode.line_length -= len(indent)
     try:
         new_buffer_str = black.format_file_contents(
-            buffer_str,
+            lines_to_format,
             fast=configs["fast"],
             mode=mode,
         )
@@ -62,8 +77,7 @@ def Black(from_line, to_line):
                     if window.valid and window.buffer == current_buffer:
                         cursors.append((i, j, window.cursor))
         vim.current.buffer[from_line:to_line] = [
-            line and indent + line
-            for line in new_buffer_str.split("\n")[:-1]
+            _add_indent(line, indent) for line in new_buffer_str.split("\n")[:-1]
         ]
         for i, j, cursor in cursors:
             window = vim.tabpages[i].windows[j]
@@ -84,20 +98,20 @@ def get_configs():
         toml_config = {}
 
     return {
-        flag.var_name: flag.cast(
-            toml_config.get(flag.name, vim.eval(flag.vim_rc_name))
-        )
+        flag.var_name: flag.cast(toml_config.get(flag.name, vim.eval(flag.vim_rc_name)))
         for flag in FLAGS
     }
 
 
 def BlackVersion():
     print(f"Black, version {black.__version__} on Python {sys.version}.")
+
+
 EndPython3
 
 
 function black#Black(from_line, to_line)
-  :execute "py3 Black(" . a:from_line . ", " . a:to_line . ")"
+  :execute "py3 Black(" . a:from_line - 1 . ", " . a:to_line . ")"
 endfunction
 
 
