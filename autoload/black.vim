@@ -51,7 +51,7 @@ def _add_indent(line: str, indent: str) -> str:
 
 def _get_configs() -> dict:
     path_pyproject_toml = black.find_pyproject_toml(
-        vim.eval("fnamemodify(getcwd(), ':t')")
+        (vim.eval("expand('%:p:h')"),)
     )
     if path_pyproject_toml:
         toml_config = black.parse_pyproject_toml(path_pyproject_toml)
