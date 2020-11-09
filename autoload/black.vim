@@ -3,9 +3,9 @@ import collections
 import sys
 import traceback
 from distutils.util import strtobool
+from pathlib import Path
 from typing import List, Tuple
 
-import black
 import vim
 
 
@@ -27,6 +27,33 @@ FLAGS = [
     Flag(name="fast", cast=strtobool),
     Flag(name="string_normalization", cast=strtobool),
 ]
+
+
+def _get_virtualenv_site_packages(venv_path, pyver):
+    if sys.platform[:3] == "win":
+        return venv_path / "Lib" / "site-packages"
+    return venv_path / "lib" / f"python{pyver[0]}.{pyver[1]}" / "site-packages"
+
+
+def _initialize_black_env() -> None:
+    pyver = sys.version_info[:2]
+    if pyver < (3, 6):
+        print("Sorry, Black requires Python 3.6+ to run.")
+        return
+
+    virtualenv_path = Path(vim.eval("g:black_virtualenv")).expanduser()
+    if not virtualenv_path.is_dir():
+        print("Virtual environment: {} does not exist".format(virtualenv_path))
+        return
+    virtualenv_site_packages = str(
+        _get_virtualenv_site_packages(virtualenv_path, pyver)
+    )
+    if virtualenv_site_packages not in sys.path:
+        sys.path.insert(0, virtualenv_site_packages)
+
+
+_initialize_black_env()
+import black
 
 
 def _get_indent(line: str) -> str:
@@ -82,7 +109,7 @@ def Black(from_line: int, to_line: int) -> None:
         )
     except black.NothingChanged:
         print("Already well formatted, good job!")
-    except Exception as exc:
+    except Exception:
         traceback.print_exception(*sys.exc_info())
     else:
         current_buffer = vim.current.window.buffer

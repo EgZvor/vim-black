@@ -20,6 +20,17 @@ Note that the responsibility for selecting a syntactically correct (aside from
 indentation) piece of code lies entirely on you. Formatting an incorrect piece
 of code will result in an error.
 
+
+SETTINGS                                    *black-settings*
+
+------------------------------------------------------------------------------
+g:black_virtualenv                          *g:black_virtualenv*
+
+Required. A path to the virtual environment where Black is installed.
+
+Example: '~/.virtualenvs/black'
+
+
 OPTIONS                                     *black-options*
 
 ------------------------------------------------------------------------------
