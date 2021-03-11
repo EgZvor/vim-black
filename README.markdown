@@ -32,7 +32,7 @@ to the virtual environment directory containing _Black_.
 
 For example:
 
-```
+``` vim
 let g:black_virtualenv = '~/.virtualenvs/black'
 ```
 
@@ -40,7 +40,7 @@ Consider using
 [pipx](https://github.com/pipxproject/pipx)
 to install _Black_ in a dedicated virtual environment.
 
-```
+``` bash
 pipx install black
 ```
 
@@ -61,7 +61,7 @@ nmap <buffer> <space>b <Plug>(Blackify)
 ```
 
 Apply Black on the current line:
-```
+``` vim
 nmap <buffer> <space>bb <Plug>(BlackifyLine)
 ```
 
