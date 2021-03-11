@@ -33,7 +33,7 @@ Example: '~/.virtualenvs/black'
 
 OPTIONS                                     *black-options*
 
-------------------------------------------------------------------------------
+==============================================================================
 g:black_fast                                *g:black_fast*
 
 Skip temporary sanity checks.
@@ -42,7 +42,7 @@ Default: 0
 Corresponding option: --fast
 
 ------------------------------------------------------------------------------
-g:black_linelength                         *g:black_linelength*
+g:black_linelength                          *g:black_linelength*
 
 How many characters per line to allow.
 
@@ -50,11 +50,31 @@ Default: 88
 Corresponding option: -l, --line-length INTEGER
 
 ------------------------------------------------------------------------------
-g:black_skip_string_normalization          *g:black_skip_string_normalization*
+g:black_skip_string_normalization           *g:black_skip_string_normalization*
 
 Don't normalize string quotes or prefixes.
 
 Default: 0
 Corresponding option: -S, --skip-string-normalization
+
+
+MAPPINGS                                    *black-mappings*
+
+==============================================================================
+                                            *<Plug>(Blackify)*
+
+Runs Black on a {motion}
+
+Example mapping: >
+
+	nmap <space>b <Plug>(Blackify)
+------------------------------------------------------------------------------
+                                            *<Plug>(BlackifyLine)*
+
+Runs Black on a current line
+
+Example mapping: >
+
+	nmap <space>bb <Plug>(BlackifyLine)
 
  vim:tw=78:et:ft=help:norl:

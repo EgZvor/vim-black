@@ -43,3 +43,18 @@ endif
 
 command! -range=% Black :call black#Black(<line1>, <line2>)
 command! BlackVersion :call black#BlackVersion()
+
+
+function Blackify(type = '')
+    if a:type == ''
+        set opfunc=Blackify
+        return 'g@'
+    endif
+    let start = getpos("'[")[1]
+    let end = getpos("']")[1]
+    call black#Black(start, end)
+endfunction
+
+
+nnoremap <expr> <Plug>(Blackify) Blackify()
+nnoremap <expr> <Plug>(BlackifyLine) Blackify() .. '_'
